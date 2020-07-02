@@ -2,16 +2,31 @@
 ## functions do
 
 ## Write a short comment describing this function
+## 1. Define set() function allows user to reset matrix
+## 2. Define get() function allows user to get matrix
+## 3. Define setInverse() function usually not used by users but by cacheSolve function
+## 4. Define getInverse() function usually not used by users but by cacheSolve function
 
 makeCacheMatrix <- function(x = matrix()) {
-  m <- NULL
+  ## Initialize the inverse property
+  i <- NULL
+  
+  ## 1. Define set() function allows user to reset matrix
   set <- function(y) {
     x <<- y
-    m <<- NULL
+    i <<- NULL
   }
+  
+  ## 2. Define get() function allows user to get matrix
   get <- function() x
-  setInverse <- function(Inverse) m <<- Inverse
-  getInverse <- function() m
+  
+  ## 3. Define setInverse() function usually not used by users but by cacheSolve function
+  setInverse <- function(Inverse) i <<- Inverse
+  
+  ## 4. Define getInverse() function usually not used by users but by cacheSolve function
+  getInverse <- function() i
+  
+  ## 5. A list of functions is returned
   list(set = set, get = get,
        setInverse = setInverse,
        getInverse = getInverse)
@@ -19,18 +34,21 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 ## Write a short comment describing this function
-
+## 1. Return a matrix that is the inverse of 'x'
+## 2. if i is null, carry out the inverse
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-  m <- x$getInverse()
-  if(!is.null(m)) {
+  ## 1. Return a matrix that is the inverse of 'x'
+  i <- x$getInverse()
+  if(!is.null(i)) {
     message("getting cached data")
-    return(m)
+    return(i)
   }
+  
+  ## 2. if i is null
   data <- x$get()
-  m <- solve(data, ...)
-  x$setInverse(m)
-  m
+  i <- solve(data)%*% data
+  x$setInverse(i)
+  i
 }
 
 
